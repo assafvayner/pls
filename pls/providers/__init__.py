@@ -43,5 +43,19 @@ def get_provider(name: str, config: dict[str, Any]) -> Provider:
         model = get_model(config, "anthropic") or "claude-sonnet-4-20250514"
         return AnthropicProvider(api_key=api_key, model=model)
 
+    elif name == "huggingface":
+        from pls.providers.huggingface import HuggingFaceProvider
+        from pls.config import get_api_key, get_model
+
+        api_key = get_api_key(config, "huggingface")
+        if not api_key:
+            raise ProviderError(
+                "Hugging Face token not found. Set HF_TOKEN env var or run: pls config set huggingface api_key <token>"
+            )
+        model = get_model(config, "huggingface") or "Qwen/Qwen2.5-Coder-32B-Instruct"
+        return HuggingFaceProvider(api_key=api_key, model=model)
+
     else:
-        raise ProviderError(f"Unknown provider: {name}. Available: ollama, openai, anthropic")
+        raise ProviderError(
+            f"Unknown provider: {name}. Available: ollama, openai, anthropic, huggingface"
+        )

@@ -35,6 +35,10 @@ DEFAULT_CONFIG: dict[str, Any] = {
         "api_key": "",
         "model": "claude-sonnet-4-20250514",
     },
+    "huggingface": {
+        "api_key": "",
+        "model": "Qwen/Qwen2.5-Coder-32B-Instruct",
+    },
 }
 
 
@@ -122,6 +126,7 @@ def get_api_key(config: dict[str, Any], provider_name: str | None = None) -> str
     env_map = {
         "openai": "OPENAI_API_KEY",
         "anthropic": "ANTHROPIC_API_KEY",
+        "huggingface": "HF_TOKEN",
     }
 
     env_var = env_map.get(provider_name, "")
